@@ -6,3 +6,12 @@ langchain_groq
 langchain_openai
 faiss-cpu
 streamlit
+python-dotenv
+bs4
+pypdf
+arxiv
+pymupdf
+wikipedia
+lxml
+langchain_huggingface
+langgraph-cli[inmem]

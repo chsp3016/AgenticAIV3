@@ -13,6 +13,7 @@ class DisplayResultStreamlit:
         usecase= self.usecase
         graph = self.graph
         user_message = self.user_message
+        print(f"Debug: Selected usecase is '{usecase}'")
         if usecase =="Basic Chatbot":
                 for event in graph.stream({'messages':("user",user_message)}):
                     print(event.values())
@@ -40,3 +41,27 @@ class DisplayResultStreamlit:
                     with st.chat_message("assistant"):
                         st.write(message.content)
              
+        elif usecase=="Blog Creation Tool":
+             # Prepare state and invoke the graph
+            initial_state = {"messages": [user_message]}
+            res = graph.invoke(initial_state)
+            for message in res['messages']:
+                if type(message) == HumanMessage:
+                    with st.chat_message("user"):
+                        st.write(message.content)
+                elif type(message)==AIMessage and message.content:
+                    with st.chat_message("assistant"):
+                        st.write(message.content)
+        
+        elif usecase.strip().lower() == "code review tool".lower():
+             # Prepare state and invoke the graph
+            initial_state = {"messages": [user_message]}
+            res = graph.invoke(initial_state)
+            for message in res['messages']:
+                if type(message) == HumanMessage:
+                    with st.chat_message("user"):
+                        st.write(message.content)
+                elif type(message)==AIMessage and message.content:
+                    with st.chat_message("assistant"):
+                        st.write(message.content)
+
