@@ -4,7 +4,7 @@ from langgraph.graph.message import add_messages
 from typing import TypedDict, Annotated, List
 from langchain_core.messages import HumanMessage, AIMessage
 
-class State(TypedDict):
+class State(TypedDict,total=False):
     """ 
     Represents the structure of the state used in the graph.
     

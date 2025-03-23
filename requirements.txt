@@ -15,3 +15,4 @@ wikipedia
 lxml
 langchain_huggingface
 langgraph-cli[inmem]
+IPython

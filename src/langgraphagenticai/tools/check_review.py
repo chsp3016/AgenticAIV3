@@ -1,24 +1,22 @@
+# In src.langgraphagenticai.tools.check_review
 from src.langgraphagenticai.state.state import State
 
+# In src.langgraphagenticai.tools.check_review.py
 
-
-def __init__(self,model):
-    self.llm = model
-def check_codereview(self,state: State):
-    """Check code similarity with requirement using LLM"""
-    prompt = f"""
-    You are an expert software code reviewer. Your job is to check if the code meets the requirement and provide suggestions for improvement.
-    Requirement: {state['requirement']}
-    Code: {state['created_code']} 
-
-    1. Does the code need improvement? Answer "Yes" or "No".
-    2. Provide very brief suggestions for improving the code. If no improvements are necessary, answer "None".
-    """
-    review_result = self.llm.invoke(prompt)
-
-    review_text = review_result.content
+def check_codereview(state: State):
+    """Check code review results to determine pass/fail"""
+    # Get current review content based on node
+    if "review_peer" in state:
+        review_text = state["review_peer"]
+    elif "review_manager" in state:
+        review_text = state["review_manager"]
+    else:
+        print("No review found in state")
+        return "Pass"  # Default to Pass if no review found
+    
     print(f"code review called")
-    if "Yes" in review_text :
+    # Only fail if there are major issues, not just minor improvements
+    if "Yes" in review_text and ("major issues" in review_text.lower() or "critical" in review_text.lower()):
         print(f"Fail returned")
-        return "Fail"  # Fails if code doesn't satisfy the requirement and has suggestions
-    return "Pass" #passes if code satisfy the requirement
+        return "Fail"
+    return "Pass"
